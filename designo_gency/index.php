@@ -1,9 +1,7 @@
 <?php
 include 'config.php';
 
-/** * SMART GALLERY LOGIC: 
- * Selects only the LATEST entry for each unique service_type.
- */
+/** * SMART GALLERY LOGIC:  */
 $gallery_query = "SELECT p1.* FROM portfolio p1 
                   INNER JOIN (SELECT service_type, MAX(id) as max_id FROM portfolio GROUP BY service_type) p2 
                   ON p1.id = p2.max_id 
@@ -27,7 +25,7 @@ $gallery_res = $conn->query($gallery_query);
     <style>
         :root {
             --ink: rgb(15, 23, 42);
-            --accent: #3B82F6;
+            --accent: #38bdf8;
         }
 
         body {
@@ -49,7 +47,7 @@ $gallery_res = $conn->query($gallery_query);
 
         /* Navigation glass effect */
         .glass-nav {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
@@ -60,7 +58,7 @@ $gallery_res = $conn->query($gallery_query);
             line-height: 0.9;
         }
 
-        /* Floating WhatsApp Pulse */
+        /* Floating WhatsApp */
         .wa-float {
             position: fixed;
             bottom: 20px;
@@ -92,7 +90,7 @@ $gallery_res = $conn->query($gallery_query);
             }
         }
 
-        /* Elegant Service Cards */
+        /* Glass Cards */
         .glass {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 255, 255, 0.05);
@@ -108,18 +106,19 @@ $gallery_res = $conn->query($gallery_query);
             }
         }
 
-        /* Form Styling */
-        input,
-        textarea,
-        select {
-            background: #969696 !important;
-            /*rgba(255, 255, 255, 0.03)*/
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        /* High-Contrast Inputs - Fixed Blending */
+        .contact-field {
+            background: #020617 !important;
+            /* Pure Dark Slate */
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
             color: white !important;
+            transition: all 0.3s ease;
         }
 
-        input:focus {
+        .contact-field:focus {
             border-color: var(--accent) !important;
+            background: #000000 !important;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
             outline: none;
         }
     </style>
@@ -144,10 +143,10 @@ $gallery_res = $conn->query($gallery_query);
     <nav class="fixed w-full z-50 px-6 md:px-12 py-5 flex justify-between items-center glass-nav">
         <h1 class="text-lg md:text-xl font-serif italic tracking-tighter">Designo Agency.</h1>
         <div class="hidden md:flex gap-8 text-[10px] uppercase tracking-widest font-bold">
-            <a href="#about" class="hover:text-blue-500">About</a>
-            <a href="#services" class="hover:text-blue-500">Services</a>
-            <a href="#work" class="hover:text-blue-500">Gallery</a>
-            <a href="#contact" class="hover:text-blue-500">Contact</a>
+            <a href="#about" class="hover:text-sky-400">About</a>
+            <a href="#services" class="hover:text-sky-400">Services</a>
+            <a href="#work" class="hover:text-sky-400">Gallery</a>
+            <a href="#contact" class="hover:text-sky-400">Contact</a>
         </div>
         <a href="login.php" class="text-[9px] md:text-[10px] uppercase tracking-widest bg-white text-black px-5 md:px-7 py-2.5 rounded-full font-bold">Studio Login</a>
     </nav>
@@ -156,7 +155,7 @@ $gallery_res = $conn->query($gallery_query);
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[800px] h-[400px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
         <div class="text-center z-10 w-full">
             <h1 id="heroTitle" class="hero-title font-serif italic opacity-0 translate-y-10">
-                Design <br class="md:hidden"> & <span class="text-blue-500">Motion.</span>
+                Design <br class="md:hidden"> & <span class="text-sky-400">Motion.</span>
             </h1>
             <p class="mt-8 md:mt-12 uppercase tracking-[0.4em] md:tracking-[1.2em] text-[8px] md:text-xs opacity-0 heroSub">
                 Cinematic Content • Marketing • Brand Identity
@@ -165,7 +164,7 @@ $gallery_res = $conn->query($gallery_query);
     </section>
 
     <section id="about" class="py-24 md:py-40 px-6 max-w-5xl mx-auto text-center border-t border-white/5">
-        <h2 class="text-[10px] uppercase tracking-[0.5em] text-blue-500 mb-10">The Agency</h2>
+        <h2 class="text-[10px] uppercase tracking-[0.5em] text-sky-400 mb-10 font-bold">The Agency</h2>
         <p class="text-2xl md:text-5xl font-serif leading-tight">
             Designo is a high-fidelity creative house. We combine <span class="italic text-gray-400">visual storytelling</span> with data-driven growth to build modern brands.
         </p>
@@ -174,7 +173,7 @@ $gallery_res = $conn->query($gallery_query);
     <section id="services" class="py-24 md:py-40 px-6 max-w-7xl mx-auto">
         <div class="mb-16 md:mb-32">
             <h2 class="text-4xl md:text-8xl font-serif italic tracking-tighter">Expertise.</h2>
-            <div class="w-16 h-[1px] bg-blue-500 mt-4"></div>
+            <div class="w-16 h-[1px] bg-sky-400 mt-4"></div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
@@ -190,132 +189,98 @@ $gallery_res = $conn->query($gallery_query);
                 <a href="service-details.php?type=<?php echo $slug; ?>" class="service-card p-10 glass group rounded-[2rem] block">
                     <h3 class="text-2xl font-bold uppercase tracking-tighter mb-2"><?php echo $s[0]; ?></h3>
                     <p class="text-xs opacity-50"><?php echo $s[1]; ?></p>
-                    <div class="mt-6 w-10 h-1 bg-blue-500 group-hover:w-full transition-all duration-500"></div>
-                    <span class="text-[10px] uppercase mt-6 block opacity-0 group-hover:opacity-100 transition-all text-blue-400 font-bold">Explore Category →</span>
+                    <div class="mt-6 w-10 h-1 bg-sky-400 group-hover:w-full transition-all duration-500"></div>
+                    <span class="text-[10px] uppercase mt-6 block opacity-0 group-hover:opacity-100 transition-all text-sky-400 font-bold">Explore Category →</span>
                 </a>
             <?php endforeach; ?>
         </div>
     </section>
 
-    <section id="work" class="py-24 md:py-40 bg-slate-900/50 text-white rounded-t-[3rem] md:rounded-t-[8rem] relative border-t border-white/5">
-        <section id="work" class="py-24 md:py-40 bg-slate-900/50 text-white rounded-t-[3rem] md:rounded-t-[8rem] relative border-t border-white/5">
-            <div class="max-w-7xl mx-auto px-6">
-                <h2 class="text-5xl md:text-9xl font-serif italic mb-20 tracking-tighter leading-none">Latest Highlights.</h2>
+    <section id="work" class="py-24 md:py-40 bg-slate-900/40 text-white rounded-t-[3rem] md:rounded-t-[8rem] relative border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-5xl md:text-9xl font-serif italic mb-20 tracking-tighter leading-none">Latest Highlights.</h2>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                    <?php while ($row = $gallery_res->fetch_assoc()):
-                        // 1. Get the exact name from your database
-                        $db_category = trim($row['service_type']);
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                <?php while ($row = $gallery_res->fetch_assoc()):
+                    $db_category = trim($row['service_type']);
 
-                        /**
-                         * 2. STRICTOR MAPPING LOGIC
-                         * This ensures "E-Commerce Shoot" goes to "shoot" 
-                         * and "Digital Marketing" goes to "marketing"
-                         */
-                        $slug = "marketing"; // Default fallback
+                    // Smart Mapping Logic
+                    $slug = "marketing";
+                    if (stripos($db_category, 'Marketing') !== false) $slug = "marketing";
+                    elseif (stripos($db_category, 'Event') !== false) $slug = "event";
+                    elseif (stripos($db_category, 'Commerce') !== false || stripos($db_category, 'Shoot') !== false) $slug = "shoot";
+                    elseif (stripos($db_category, 'Graphic') !== false) $slug = "graphic";
+                    elseif (stripos($db_category, 'Post') !== false) $slug = "post";
+                ?>
+                    <a href="service-details.php?type=<?php echo $slug; ?>" class="group block relative overflow-hidden rounded-[2.5rem] bg-black aspect-[4/5] border border-white/5">
+                        <?php if ($row['file_type'] == 'video'): ?>
+                            <video src="assets/uploads/<?php echo $row['image_path']; ?>" muted loop autoplay playsinline class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"></video>
+                        <?php else: ?>
+                            <img src="assets/uploads/<?php echo $row['image_path']; ?>" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-60 group-hover:opacity-100">
+                        <?php endif; ?>
 
-                        if (stripos($db_category, 'Marketing') !== false) {
-                            $slug = "marketing";
-                        } elseif (stripos($db_category, 'Event') !== false) {
-                            $slug = "event";
-                        } elseif (stripos($db_category, 'Commerce') !== false || stripos($db_category, 'Shoot') !== false) {
-                            $slug = "shoot";
-                        } elseif (stripos($db_category, 'Graphic') !== false) {
-                            $slug = "graphic";
-                        } elseif (stripos($db_category, 'Post') !== false || stripos($db_category, 'Process') !== false) {
-                            $slug = "post";
-                        }
-                    ?>
-                        <a href="service-details.php?type=<?php echo $slug; ?>" class="group block relative overflow-hidden rounded-[2.5rem] bg-black/40 aspect-[4/5] border border-white/5">
-                            <img src="assets/uploads/<?php echo $row['image_path']; ?>"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-70 group-hover:opacity-100">
-
-                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-90"></div>
-
-                            <div class="absolute inset-0 p-10 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                                <p class="text-[9px] uppercase tracking-widest text-blue-400 font-bold mb-2">
-                                    <?php echo $db_category; ?>
-                                </p>
-                                <h4 class="text-3xl font-serif italic mb-6"><?php echo $row['title']; ?></h4>
-
-                                <div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                                    <span class="text-[10px] uppercase font-bold tracking-widest">View <?php echo $slug; ?> Projects</span>
-                                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-blue-600 transition-all">
-                                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 11L11 1M11 1H1M11 1V11" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                        </svg>
-                                    </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-90"></div>
+                        <div class="absolute inset-0 p-10 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            <p class="text-[9px] uppercase tracking-widest text-sky-400 font-bold mb-2"><?php echo $db_category; ?></p>
+                            <h4 class="text-3xl font-serif italic mb-6"><?php echo $row['title']; ?></h4>
+                            <div class="flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-all">
+                                <span class="text-[10px] uppercase font-bold tracking-widest">View Portfolio</span>
+                                <div class="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center group-hover:scale-110 transition-all">
+                                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                                        <path d="M1 11L11 1M11 1H1M11 1V11" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
                                 </div>
                             </div>
-                        </a>
-                    <?php endwhile; ?>
-                </div>
+                        </div>
+                    </a>
+                <?php endwhile; ?>
             </div>
-        </section>
+        </div>
     </section>
 
     <section id="contact" class="py-24 md:py-40 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-20">
         <div>
             <h2 class="text-5xl md:text-8xl font-serif italic mb-8 tracking-tighter leading-none">Let's <br>Talk.</h2>
-            <p class="opacity-40 mb-12 max-w-sm">Ready to elevate your brand? Send us an enquiry or contact us directly.</p>
-            <div class="glass p-8 rounded-[2rem] inline-block">
-                <p class="text-[10px] uppercase tracking-widest text-blue-500 mb-4 font-bold">Direct Line</p>
+            <p class="opacity-40 mb-12 max-w-sm">Bring your vision to the screen. Send us an enquiry below.</p>
+            <div class="glass p-8 rounded-[2rem] inline-block border-sky-500/30">
+                <p class="text-[10px] uppercase tracking-widest text-sky-400 mb-2 font-bold">Studio Phone</p>
                 <p class="text-2xl font-serif italic">+91 72280 24562</p>
             </div>
         </div>
 
         <div class="relative group">
-            <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-sky-400 rounded-[3.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+            <div class="absolute -inset-1 bg-gradient-to-r from-sky-600 to-blue-400 rounded-[3.5rem] blur opacity-10 group-hover:opacity-30 transition duration-1000"></div>
 
-            <div class="relative">
-                <div class="absolute -inset-2 bg-blue-600/20 rounded-[3.5rem] blur-2xl opacity-0 group-hover:opacity-100 transition duration-700"></div>
-
-                <div class="relative glass p-8 md:p-12 rounded-[3rem] border border-white/10 bg-slate-900 shadow-2xl">
-                    <form action="send_enquiry.php" method="POST" class="space-y-8">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                            <div class="space-y-2">
-                                <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-sky-400 ml-1">Full Name</label>
-                                <input type="text" name="name" required placeholder="John Doe"
-                                    class="w-full bg-slate-950 border border-white/20 p-4 rounded-2xl text-sm text-white focus:border-sky-500 focus:bg-black transition-all placeholder:text-slate-600 outline-none hover:border-white/40">
-                            </div>
-
-                            <div class="space-y-2">
-                                <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-sky-400 ml-1">Email Address</label>
-                                <input type="email" name="email" required placeholder="john@example.com"
-                                    class="w-full bg-slate-950 border border-white/20 p-4 rounded-2xl text-sm text-white focus:border-sky-500 focus:bg-black transition-all placeholder:text-slate-600 outline-none hover:border-white/40">
-                            </div>
-                        </div>
-
+            <div class="relative glass p-8 md:p-12 rounded-[3rem] border border-white/10 bg-slate-900 shadow-2xl">
+                <form action="send_enquiry.php" method="POST" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-sky-400 ml-1">Select Service</label>
-                            <div class="relative">
-                                <select name="service" class="w-full bg-slate-950 border border-white/20 p-4 rounded-2xl text-sm text-white appearance-none focus:border-sky-500 focus:bg-black transition-all outline-none cursor-pointer hover:border-white/40">
-                                    <option value="marketing" class="bg-slate-900">Digital Marketing</option>
-                                    <option value="event" class="bg-slate-900">Event Coverage</option>
-                                    <option value="shoot" class="bg-slate-900">E-Commerce Shoot</option>
-                                    <option value="graphic" class="bg-slate-900">Graphic Design</option>
-                                    <option value="post" class="bg-slate-900">Post Process</option>
-                                </select>
-                                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">
-                                    <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-                                        <path d="M1 1L6 6L11 1" stroke="white" stroke-width="2" stroke-linecap="round" />
-                                    </svg>
-                                </div>
-                            </div>
+                            <label class="text-[9px] uppercase tracking-widest text-sky-400 font-bold ml-1">Full Name</label>
+                            <input type="text" name="name" required placeholder="John Doe" class="contact-field w-full p-4 rounded-2xl text-sm">
                         </div>
-
                         <div class="space-y-2">
-                            <label class="text-[10px] uppercase tracking-[0.2em] font-bold text-sky-400 ml-1">Project Brief</label>
-                            <textarea name="message" rows="4" placeholder="Tell us about your vision..."
-                                class="w-full bg-slate-950 border border-white/20 p-4 rounded-2xl text-sm text-white focus:border-sky-500 focus:bg-black transition-all placeholder:text-slate-600 outline-none resize-none hover:border-white/40"></textarea>
+                            <label class="text-[9px] uppercase tracking-widest text-sky-400 font-bold ml-1">Email</label>
+                            <input type="email" name="email" required placeholder="john@designo.com" class="contact-field w-full p-4 rounded-2xl text-sm">
                         </div>
-
-                        <button type="submit" class="w-full bg-sky-500 text-slate-950 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs transition-all hover:bg-white hover:shadow-[0_0_30px_rgba(56,189,248,0.4)] active:scale-[0.98]">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] uppercase tracking-widest text-sky-400 font-bold ml-1">Interest</label>
+                        <select name="service" class="contact-field w-full p-4 rounded-2xl text-sm cursor-pointer">
+                            <option>Digital Marketing</option>
+                            <option>Event Coverage</option>
+                            <option>E-Commerce Shoot</option>
+                            <option>Graphic Design</option>
+                            <option>Post Process</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-[9px] uppercase tracking-widest text-sky-400 font-bold ml-1">Project Brief</label>
+                        <textarea name="message" rows="4" placeholder="Tell us about your project..." class="contact-field w-full p-4 rounded-2xl text-sm resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-sky-500 text-slate-950 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-white hover:scale-[1.02] transition-all duration-300">
+                        Send Message
+                    </button>
+                </form>
             </div>
         </div>
     </section>
@@ -362,7 +327,7 @@ $gallery_res = $conn->query($gallery_query);
             duration: 1
         }, "-=1");
 
-        // Scroll Reveal
+        // Scroll Reveal Animations
         gsap.utils.toArray(".service-card, .glass, #work a").forEach(el => {
             gsap.from(el, {
                 scrollTrigger: {
